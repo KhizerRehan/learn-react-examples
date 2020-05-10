@@ -1,26 +1,47 @@
 import React, {useState} from 'react';
+import useInput from './hooks/useInput';
 
 function FormInput() {
+    const [firstName, bindFirstNameData, resetFirstName] = useInput('');
+    const [lastName, bindLastNameData, resetLastName] = useInput('');
+  
 
-    const [firstName, setFirstName] = useState("Default-Firstname");
-    const [lastName, setLastName] = useState("Default-Lastname");
-  
-  
+    const handleSubmit = (event) => {
+      console.log(event.target.value);
+      event.preventDefault();
+      resetFirstName();
+      resetLastName()
+    }
+
     return (
      <React.Fragment>
-       <form>
+       <form onSubmit={handleSubmit}>
          <div>
            <label>FirstName</label>
-           <input value={firstName} onChange={event => setFirstName(event.target.value)} type="text" />
+           <input type="text" 
+            {
+              ...bindFirstNameData
+            }
+           />
          </div>
   
          <div>
            <label>LastName</label>
-           <input value={lastName} onChange={event => setLastName(event.target.value)} type="text" />
+           <input type="text" 
+             {
+              ...bindLastNameData
+             }
+           />
          </div>
+
+         <button type="submit">Submit</button>
        </form>
+
+       {
+         (firstName && lastName) &&
+         <h1>Your FullName is {firstName+"-"+lastName}</h1>
+       }
   
-       <h1>Your FullName is {firstName+"-"+lastName}</h1>
      </React.Fragment>
     )
   }
